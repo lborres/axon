@@ -1,0 +1,7 @@
+{
+  "name": "@axon/go-server",
+  "private": true,
+  "scripts": {
+    "dev:client": "go run ./cmd/api"
+  }
+}
