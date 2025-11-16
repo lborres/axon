@@ -46,6 +46,7 @@
   "devDependencies": {
     "@axon/eslint-config": "workspace:*",
     "@axon/prettier-config": "workspace:*",
+    "@axon/tailwind-config": "workspace:*",
     "@axon/tsconfig": "workspace:*",
     "@tailwindcss/vite": "catalog:",
     "@testing-library/dom": "^10.4.1",
