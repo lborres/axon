@@ -1,0 +1,31 @@
+{
+  "name": "axon",
+  "version": "0.0.1",
+  "private": "true",
+  "packageManager": "pnpm@10.22.0",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "clean:workspace": "turbo run clean",
+    "clean": "git clean -xdf node_modules",
+    "dev:client": "concurrently \"turbo dev\" \"turbo dev:client\"",
+    "dev": "concurrently \"turbo dev\"",
+    "fmt:fix": "turbo run fmt --continue -- --write --cache --cache-location .cache/.prettiercache",
+    "fmt": "turbo run fmt --continue -- --cache --cache-location .cache/.prettiercache",
+    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
+    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
+    "ui-add": "turbo run ui-add"
+  },
+  "devDependencies": {
+    "@axon/prettier-config": "workspace:*",
+    "concurrently": "^9.2.1",
+    "dotenv-cli": "^11.0.0",
+    "prettier": "catalog:",
+    "turbo": "^2.6.0",
+    "typescript": "catalog:"
+  },
+  "prettier": "@axon/prettier-config"
+}
