@@ -1,0 +1,7 @@
+{
+  "name": "@axon/tsconfig",
+  "private": true,
+  "files": [
+    "*.json"
+  ]
+}
