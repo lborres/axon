@@ -1,0 +1,10 @@
+{
+  "extends": "@axon/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "dom", "dom.iterable"],
+    "jsx": "preserve",
+    "rootDir": "."
+  },
+  "include": ["ui/src/*"],
+  "exclude": ["node_modules"]
+}
