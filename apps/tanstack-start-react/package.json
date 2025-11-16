@@ -12,7 +12,6 @@
     "fmt": "prettier --check . --ignore-path ../../.gitignore --ignore-path .prettierignore",
     "lint": "eslint --flag unstable_native_nodejs_ts_config",
     "typecheck": "tsc --noEmit",
-    "ui-add": "pnpm dlx shadcn@latest add && prettier src --write --list-different",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
