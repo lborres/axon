@@ -15,6 +15,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@axon/ui": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/react-devtools": "^0.8.1",
@@ -36,7 +37,6 @@
     "@axon/prettier-config": "workspace:*",
     "@axon/tailwind-config": "workspace:*",
     "@axon/tsconfig": "workspace:*",
-    "@axon/ui": "workspace:*",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/devtools-vite": "^0.3.11",
     "@tanstack/eslint-config": "^0.3.2",
