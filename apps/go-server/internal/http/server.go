@@ -1,28 +1,29 @@
 package http
 
 import (
-	"context"
-	"database/sql"
 	"axon/server/internal/config"
 	"axon/server/internal/routes"
+	"context"
 	"log"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Server struct {
 	app  *fiber.App
 	addr string
 	cfg  *config.Config
-	_    *sql.DB // TODO: include db
+	db   *pgxpool.Pool
 }
 
-func New(addr string, cfg *config.Config) (*Server, error) {
+func New(addr string, cfg *config.Config, pool *pgxpool.Pool) (*Server, error) {
 	app := fiber.New()
 	server := &Server{
 		app:  app,
 		addr: addr,
 		cfg:  cfg,
+		db:   pool,
 	}
 	routes.Register(app, cfg)
 	return server, nil

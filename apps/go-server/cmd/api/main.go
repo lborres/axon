@@ -18,12 +18,17 @@ import (
 
 func run(ctx context.Context, cfg config.Config) error {
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
-	defer stop()
 
 	log.Println("Starting up...")
 
 	env := cfg.Env
+	log.Println("Running on Environment:", env.APP_ENV)
 	addr := fmt.Sprintf("%s:%s", env.HOST, env.PORT)
+
+	// Log Server Timezone as a reference for logs
+	_, offset := time.Now().Zone()
+	hours := offset / 3600
+	log.Printf("Timezone: UTC%+03d (%s)", hours, time.Now().Location())
 
 	// Initialize database pool
 	pool, err := db.New(ctx, cfg.Env.DATABASE_URL)
@@ -33,7 +38,7 @@ func run(ctx context.Context, cfg config.Config) error {
 	defer db.Close(pool)
 	log.Println("Database connected")
 
-	server, err := http.New(addr, &cfg)
+	server, err := http.New(addr, &cfg, pool)
 	if err != nil {
 		return err
 	}
@@ -41,14 +46,18 @@ func run(ctx context.Context, cfg config.Config) error {
 	// start listening in goroutine
 	listenErr := make(chan error, 1)
 	go func() {
-		listenErr <- server.Start()
+		if err := server.Start(); err != nil {
+			listenErr <- err
+		}
 	}()
 
 	// wait for signal or listen error
 	select {
 	case <-ctx.Done():
-		log.Println("Initiating shutdown process...")
+		stop()
+		log.Println("Initiating graceful shutdown...")
 	case err := <-listenErr:
+		stop()
 		if err != nil && err.Error() != "server closed" {
 			return err
 		}
