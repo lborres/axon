@@ -3,6 +3,7 @@ package main
 import (
 	"axon/server/internal/config"
 	"axon/server/internal/http"
+	"axon/server/pkg/db"
 	"context"
 	"flag"
 	"fmt"
@@ -24,7 +25,13 @@ func run(ctx context.Context, cfg config.Config) error {
 	env := cfg.Env
 	addr := fmt.Sprintf("%s:%s", env.HOST, env.PORT)
 
-	// TODO: Initialize db
+	// Initialize database pool
+	pool, err := db.New(ctx, cfg.Env.DATABASE_URL)
+	if err != nil {
+		return fmt.Errorf("failed to initialize database: %w", err)
+	}
+	defer db.Close(pool)
+	log.Println("Database connected")
 
 	server, err := http.New(addr, &cfg)
 	if err != nil {
