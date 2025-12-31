@@ -1,17 +1,26 @@
 package config
 
+import "log"
+
 type Env struct {
-	HOST                   string
-	PORT                   string
-	JWTSecret              string
-	JWTExpirationInSeconds int64
+	HOST string `env:"API_PUBLIC_HOST" default:"localhost"`
+	PORT string `env:"API_SERVER_PORT" required:"true"`
+
+	// Server Environment
+	// "dev" | "test" | "prod"
+	APP_ENV string `env:"APP_ENV" default:"prod" required:"true"`
+
+	DATABASE_URL string `env:"DATABASE_URL" required:"true" expand:"true"`
 }
 
 func getEnv() Env {
-	return Env{
-		HOST:                   getEnvStr("API_PUBLIC_HOST", "localhost", false),
-		PORT:                   getEnvStr("API_SERVER_PORT", "", true),
-		JWTSecret:              getEnvStr("API_JWT_SECRET", "supersecret", false), // TODO: must be required
-		JWTExpirationInSeconds: getEnvInt64("API_JWT_EXPIRATION_IN_SECONDS", 3600*24*7, false),
+	var e Env
+	if err := Load(&e); err != nil {
+		log.Fatal(err)
 	}
+	return e
+}
+
+func (e *Env) IsProd() bool {
+	return e.APP_ENV == "prod" || e.APP_ENV == "production"
 }
